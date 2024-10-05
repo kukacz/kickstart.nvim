@@ -115,7 +115,7 @@ vim.opt.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+  vim.opt.clipboard = 'unnamed'
 end)
 
 -- Enable break indent
@@ -230,6 +230,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-fugitive',
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -663,6 +664,20 @@ require('lazy').setup({
           end,
         },
       }
+      -- kukacz: Start KCL LSP ---
+      local server_config = require 'lspconfig.configs'
+      local util = require 'lspconfig.util'
+
+      server_config.kcl = {
+        default_config = {},
+      }
+
+      require('lspconfig').kcl.setup {
+        cmd = { 'kcl-language-server' },
+        filetypes = { 'kcl' },
+        root_dir = util.root_pattern '.git',
+      }
+      -- kukacz: End KCL LSP ---
     end,
   },
 
@@ -931,6 +946,32 @@ require('lazy').setup({
       'kcl',
     },
   },
+  {
+    's1n7ax/nvim-window-picker',
+    name = 'window-picker',
+    event = 'VeryLazy',
+    version = '2.*',
+    config = function()
+      require('window-picker').setup()
+      hint = 'floating-big-letter'
+    end,
+  },
+  {
+    'rmagatti/auto-session',
+    lazy = false,
+    dependencies = {
+      'nvim-telescope/telescope.nvim', -- Only needed if you want to use session lens
+    },
+
+    ---enables autocomplete for opts
+    ---@module "auto-session"
+    ---@type AutoSession.Config
+    opts = {
+      suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+      -- log_level = 'debug',
+    },
+  },
+  { 'akinsho/toggleterm.nvim', version = '*', config = true },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
