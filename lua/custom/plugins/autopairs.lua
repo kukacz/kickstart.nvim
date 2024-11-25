@@ -1,0 +1,1 @@
+../../kickstart/plugins/autopairs.lua
