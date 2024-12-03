@@ -8,8 +8,13 @@ return {
   version = false, -- set this if you want to always pull the latest change
   opts = {
     -- add any opts here
-    provider = 'claude',
+    provider = 'copilot',
     auto_suggestions_provider = 'azure',
+    copilot = {
+      --   endpoint = 'https://api.githubcopilot.com',
+      -- model = 'gpt-4o-2024-08-06',
+      model = 'o1-mini-2024-09-12-preview',
+    },
     claude = {
       endpoint = 'https://api.anthropic.com',
       model = 'claude-3-5-sonnet-20241022',
@@ -35,7 +40,14 @@ return {
     'MunifTanjim/nui.nvim',
     --- The below dependencies are optional,
     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons:
-    'zbirenbaum/copilot.lua', -- for providers='copilot'
+    {
+      'zbirenbaum/copilot.lua',
+      cmd = 'Copilot',
+      event = 'InsertEnter',
+      config = function()
+        require('copilot').setup {}
+      end,
+    },
     {
       -- support for image pasting
       'HakonHarnes/img-clip.nvim',
@@ -53,13 +65,13 @@ return {
         },
       },
     },
-    {
-      -- Make sure to set this up properly if you have lazy=true
-      'MeanderingProgrammer/render-markdown.nvim',
-      opts = {
-        file_types = { 'markdown', 'Avante' },
-      },
-      ft = { 'markdown', 'Avante' },
-    },
+    -- {
+    --   -- Make sure to set this up properly if you have lazy=true
+    --   'MeanderingProgrammer/render-markdown.nvim',
+    --   opts = {
+    --     file_types = { 'markdown', 'Avante' },
+    --   },
+    --   ft = { 'markdown', 'Avante' },
+    -- },
   },
 }
